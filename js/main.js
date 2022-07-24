@@ -1,10 +1,16 @@
 let tile = document.getElementsByClassName( 'tile' );
 let winMsg = document.getElementById('win-msg');
 let loseMsg = document.getElementById('lose-msg');
+let drawMsg = document.getElementById('draw-msg');
 let resetBtn = document.getElementById('reset-btn');
+
+let playerWin = false;
+let cpuWin = false;
+let isDraw = false;
 
 winMsg.style.visibility = 'hidden';
 loseMsg.style.visibility = 'hidden';
+drawMsg.style.visibility = 'hidden';
 
 let counter = 0;
 
@@ -12,8 +18,8 @@ for (let i = 0; i < tile.length; i++) {
 
     tile[i].innerHTML = '';
 
-
 }
+
 
 const resetGame = () =>{
 
@@ -21,10 +27,15 @@ const resetGame = () =>{
         tile[i].innerHTML = '';
         tile[i].classList.remove('winner');
         tile[i].classList.remove('winner-cpu');
+        tile[i].classList.remove('disabled');
     }
     counter = 0;
     winMsg.style.visibility = 'hidden';
     loseMsg.style.visibility = 'hidden';
+    drawMsg.style.visibility = 'hidden';
+    playerWin = false;
+    cpuWin = false;
+    isDraw = false;
 
 };
 
@@ -63,21 +74,22 @@ function getComputerChoice () {
 
     let random = Math.floor( Math.random() * tile.length );
 
+    checkWin();
 
     if ( tile[ random ].firstChild ) {
 
-        if(counter < 8){
-
-            getComputerChoice();
-
-        }else{
+        if (counter >= 8) {
 
             return;
+
+        } else {
+
+            getComputerChoice();
 
         }
 
 
-    } else {
+    } else if(playerWin !== true) {
 
         let o = document.createElement( 'span' );
         o.className = 'o';
@@ -89,9 +101,19 @@ function getComputerChoice () {
 
     }
 
-    checkWin();
+
 
 }
+
+const disableButtons = () =>{
+
+        for (let i = 0; i < tile.length; i++) {
+
+            tile[i].classList.add('disabled');
+
+        }
+
+};
 
 function checkWin () {
 
@@ -106,6 +128,10 @@ function checkWin () {
 
         winMsg.innerHTML = 'WINNER';
 
+        playerWin = true;
+
+        disableButtons();
+
 
         //Middle Across
     } else if ( tile[ 3 ].innerHTML.includes('X') && tile[ 4 ].innerHTML.includes('X') && tile[ 5 ].innerHTML.includes('X') ) {
@@ -118,6 +144,10 @@ function checkWin () {
 
         winMsg.innerHTML = 'WINNER';
 
+        playerWin = true;
+
+        disableButtons();
+
         //Bottom Across
     } else if ( tile[ 6 ].innerHTML.includes('X') && tile[ 7 ].innerHTML.includes('X') && tile[ 8 ].innerHTML.includes('X') ) {
 
@@ -129,8 +159,11 @@ function checkWin () {
 
         winMsg.innerHTML = 'WINNER';
 
+        playerWin = true;
+
+        disableButtons();
         //Left side down
-    } else if ( tile[ 0 ].innerHTML.includes('X') && tile[ 3 ].innerHTML.includes('X') && tile[ 6 ].innerHTML.includes('X') ) {
+    } else if ( tile[ 0 ].innerHTML.includes('X') && tile[ 3 ].innerHTML.includes(`X`) && tile[ 6 ].innerHTML.includes('X') ) {
 
         tile[0].classList.add('winner');
         tile[3].classList.add('winner');
@@ -140,6 +173,9 @@ function checkWin () {
 
         winMsg.innerHTML = 'WINNER';
 
+        playerWin = true;
+
+        disableButtons();
         //Middle Side Down
     } else if ( tile[ 1 ].innerHTML.includes('X') && tile[ 4 ].innerHTML.includes('X') && tile[ 7 ].innerHTML.includes('X') ) {
 
@@ -151,6 +187,9 @@ function checkWin () {
 
         winMsg.innerHTML = 'WINNER';
 
+        playerWin = true;
+
+        disableButtons();
         //Right Side Down
     } else if ( tile[ 2 ].innerHTML.includes('X') && tile[ 5 ].innerHTML.includes('X') && tile[ 8 ].innerHTML.includes('X') ) {
 
@@ -162,6 +201,9 @@ function checkWin () {
 
         winMsg.innerHTML = 'WINNER';
 
+        playerWin = true;
+
+        disableButtons();
         //Diagonal top left to bottom right
     } else if ( tile[ 0 ].innerHTML.includes('X') && tile[ 4 ].innerHTML.includes('X') && tile[ 8 ].innerHTML.includes('X') ) {
 
@@ -173,6 +215,9 @@ function checkWin () {
 
         winMsg.innerHTML = 'WINNER';
 
+        playerWin = true;
+
+        disableButtons();
         //Diagonal top right to bottom left
     } else if ( tile[ 2 ].innerHTML.includes('X') && tile[ 4 ].innerHTML.includes('X') && tile[ 6 ].innerHTML.includes('X') ) {
 
@@ -184,6 +229,9 @@ function checkWin () {
 
         winMsg.innerHTML = 'WINNER';
 
+        playerWin = true;
+
+        disableButtons();
 
     }
 
@@ -199,6 +247,9 @@ function checkWin () {
 
         loseMsg.innerHTML = 'YOU LOSE';
 
+        cpuWin = true;
+
+        disableButtons();
         //Middle Across
     } else if ( tile[ 3 ].innerHTML.includes('O') && tile[ 4 ].innerHTML.includes('O') && tile[ 5 ].innerHTML.includes('O') ) {
 
@@ -210,6 +261,9 @@ function checkWin () {
 
         loseMsg.innerHTML = 'YOU LOSE';
 
+        cpuWin = true;
+
+        disableButtons();
         //Bottom Across
     } else if ( tile[ 6 ].innerHTML.includes('O') && tile[ 7 ].innerHTML.includes('O') && tile[ 8 ].innerHTML.includes('O') ) {
 
@@ -220,6 +274,10 @@ function checkWin () {
         loseMsg.style.visibility = 'visible';
 
         loseMsg.innerHTML = 'YOU LOSE';
+
+        cpuWin = true;
+
+        disableButtons();
 
         //Left side down
     } else if ( tile[ 0 ].innerHTML.includes('O') && tile[ 3 ].innerHTML.includes('O') && tile[ 6 ].innerHTML.includes('O') ) {
@@ -232,6 +290,10 @@ function checkWin () {
 
         loseMsg.innerHTML = 'YOU LOSE';
 
+        cpuWin = true;
+
+        disableButtons();
+
         //Middle Side Down
     } else if ( tile[ 1 ].innerHTML.includes('O') && tile[ 4 ].innerHTML.includes('O') && tile[ 7 ].innerHTML.includes('O') ) {
 
@@ -242,6 +304,10 @@ function checkWin () {
         loseMsg.style.visibility = 'visible';
 
         loseMsg.innerHTML = 'YOU LOSE';
+
+        cpuWin = true;
+
+        disableButtons();
 
         //Right Side Down
     } else if ( tile[ 2 ].innerHTML.includes('O') && tile[ 5 ].innerHTML.includes('O') && tile[ 8 ].innerHTML.includes('O') ) {
@@ -254,6 +320,9 @@ function checkWin () {
 
         loseMsg.innerHTML = 'YOU LOSE';
 
+        cpuWin = true;
+
+        disableButtons();
 
         //Diagonal top left to bottom right
     } else if ( tile[ 0 ].innerHTML.includes('O') && tile[ 4 ].innerHTML.includes('O') && tile[ 8 ].innerHTML.includes('O') ) {
@@ -266,7 +335,9 @@ function checkWin () {
 
         loseMsg.innerHTML = 'YOU LOSE';
 
+        cpuWin = true;
 
+        disableButtons();
         //Diagonal top right to bottom left
     } else if ( tile[ 2 ].innerHTML.includes('O') && tile[ 4 ].innerHTML.includes('O') && tile[ 6 ].innerHTML.includes('O') ) {
 
@@ -278,8 +349,33 @@ function checkWin () {
 
         loseMsg.innerHTML = 'YOU LOSE';
 
+        cpuWin = true;
 
+        disableButtons();
     }
+
+        if(tile[0].innerHTML !== '' &&
+            tile[1].innerHTML !== '' &&
+            tile[2].innerHTML !== '' &&
+            tile[3].innerHTML !== '' &&
+            tile[4].innerHTML !== '' &&
+            tile[5].innerHTML !== '' &&
+            tile[6].innerHTML !== '' &&
+            tile[7].innerHTML !== '' &&
+            tile[8].innerHTML !== ''){
+
+            isDraw = true;
+
+        }
+
+        if(cpuWin === false && playerWin === false && isDraw === true){
+
+            drawMsg.style.visibility = 'visible';
+            drawMsg.innerHTML = "IT'S A DRAW!"
+
+            disableButtons();
+
+        }
 
 
 }

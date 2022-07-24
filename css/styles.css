@@ -78,19 +78,22 @@ h1{
 }
 
 .win-msg-wrapper,
-.lose-msg-wrapper{
+.lose-msg-wrapper,
+.draw-msg-wrapper{
 
     width: 100%;
     display: flex;
     align-content: center;
     justify-content: center;
     margin-top: 40px;
+    transition: all 1s ease-in;
 
 
 
 }
 #win-msg,
-#lose-msg{
+#lose-msg,
+#draw-msg{
 
     background-color: #84e684;
     color: #0d190d;
@@ -108,6 +111,13 @@ h1{
     background-color: #e68484;
     color: #190d0d;
     border: 2px solid #190d0d;
+
+}
+#draw-msg{
+
+    background-color: #e6d684;
+    color: #19160d;
+    border: 2px solid #19160d;
 
 }
 
@@ -129,5 +139,20 @@ h1{
     outline: none;
     border: none;
 
+
+}
+
+#game-board .disabled{
+
+    pointer-events: none;
+    opacity: 0.6;
+
+}
+
+#win-msg,
+#lose-msg,
+#draw-msg{
+
+    transform: translateY(-500px);
 
 }
